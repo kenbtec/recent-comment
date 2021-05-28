@@ -26,7 +26,7 @@
         showMorelink = !1,
         defaultAvatar = "http://1.bp.blogspot.com/-m2JqA8HH-JY/V1Y9Z1SpzpI/AAAAAAAAEEY/jnJ-r_-Ta0UadbOE84Egdea5jfcwPSSvwCLcB/s1600/noimage.png",
         hideCredits = !0,
-        numComments = numComments || 5,
+        numComments = numComments || 50,
         avatarSize = avatarSize || 60,
         characters = characters || 40,
         defaultAvatar = defaultAvatar || "http://1.bp.blogspot.com/-m2JqA8HH-JY/V1Y9Z1SpzpI/AAAAAAAAEEY/jnJ-r_-Ta0UadbOE84Egdea5jfcwPSSvwCLcB/s1600/noimage.png",
