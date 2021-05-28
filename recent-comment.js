@@ -18,7 +18,7 @@
         var c = "";
         0 == hideCredits && (c = "display:block;"), e += "", document.write(e)
     }
-    var numComments = 5,
+    var numComments = 50,
         showAvatar = !0,
         avatarSize = 42,
         roundAvatar = !0,
