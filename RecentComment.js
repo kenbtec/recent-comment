@@ -1,22 +1,51 @@
-function rc_avatar(json) {
-  var html = "<ul class='idbcomments'>";
-  var entries = json.feed.entry || [];
+// Recent Comments free version 3.2 by http://duypham.info
 
-  for (var i = 0; i < entries.length && i < 5; i++) {
-    var entry = entries[i];
-    var author = entry.author[0].name.$t;
-    var link = entry.link.find(l => l.rel === "alternate").href;
-    var avatar = entry.author[0].gd$image ? entry.author[0].gd$image.src : "https://blogblog.com/img/b16-rounded.gif";
-    var content = entry.content.$t.replace(/<.*?>/g, "");
+var copyright_by_duypham_dot_info = "Recent Comments free version 3.2 by http://duypham.info";
 
-    if (content.length > 40) {
-      content = content.substring(0, 40) + "...";
+// Cấu hình hiển thị
+var nc = 30;                // số lượng comment
+var length_name = 30;       // độ dài tối đa của tên
+var length_content = 100;   // độ dài tối đa của nội dung
+
+// Avatar mặc định
+var no_avatar = "https://1.bp.blogspot.com/-TrAcs0QeGmk/YPLQdMWjrcI/AAAAAAAAAm8/K1HEOZmwNFooyMLefdRqv4nMmtsgA0bSgCLcBGAsYHQ/s16000/favicon.png";
+
+// Trang chủ và avatar admin
+var home_page = "https://www.ngohoanganhtuan.net";
+var admin_uri = "https://www.facebook.com/ngohoanganhtuan266/";
+var admin_avatar = no_avatar;
+
+// Hàm chính xử lý comment
+function recentComments(json) {
+    var comments = json.feed.entry;
+    var html = "";
+
+    for (var i = 0; i < nc && i < comments.length; i++) {
+        var author = comments[i].author[0].name.$t;
+        var link = comments[i].link[2].href;
+        var content = comments[i].content ? comments[i].content.$t : comments[i].summary.$t;
+
+        // Cắt ngắn tên và nội dung nếu quá dài
+        if (author.length > length_name) {
+            author = author.substring(0, length_name) + "...";
+        }
+        if (content.length > length_content) {
+            content = content.substring(0, length_content) + "...";
+        }
+
+        // Avatar
+        var avatar = comments[i].author[0].gd$image ? comments[i].author[0].gd$image.src : no_avatar;
+        if (author === "Admin") {
+            avatar = admin_avatar;
+        }
+
+        // Tạo HTML hiển thị
+        html += "<li>";
+        html += "<img src='" + avatar + "' alt='avatar' />";
+        html += "<a href='" + link + "'>" + author + "</a>: " + content;
+        html += "</li>";
     }
 
-    html += "<li><div class='avatarImage'><img src='" + avatar + "' style='width:42px;height:42px;border-radius:50%;'/></div>"
-          + "<a href='" + link + "'><strong>" + author + "</strong></a><br/>" + content + "</li>";
-  }
-
-  html += "</ul>";
-  document.getElementById("rc-avatar-plus").innerHTML = html;
+    // Gắn vào phần tử có id 'recent-comments'
+    document.getElementById("recent-comments").innerHTML = "<ul>" + html + "</ul>";
 }
