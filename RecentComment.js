@@ -104,6 +104,11 @@ function rc_avatar() {
     document.getElementById("rc-avatar-plus").innerHTML = e;
 }
 
+// Nạp feed chính
+if (copyright_by_kenat === "Recent Comments free version 3.2 by " + ad) {
+    document.write('<script src="' + home_page + "/feeds/comments/default?alt=json-in-script&max-results=" + nc + '&callback=rc_avatar1"><\/script>');
+}
+
 // Hàm hiển thị câu đúng ngữ pháp
 function updateCommentSentence() {
   var el = document.getElementById("totalComments_bottom");
@@ -114,9 +119,4 @@ function updateCommentSentence() {
     : "There are " + count + " comments";
   var target = document.getElementById("commentSentence");
   if (target) target.innerText = sentence;
-}
-
-// Nạp feed chính
-if (copyright_by_kenat === "Recent Comments free version 3.2 by " + ad) {
-    document.write('<script src="' + home_page + "/feeds/comments/default?alt=json-in-script&max-results=" + nc + '&callback=rc_avatar1"><\/script>');
 }
