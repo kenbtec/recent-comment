@@ -102,8 +102,8 @@ function rc_avatar() {
     }
 
     // Xác định class admin/author
-    var liClass = ( (ur[z] == ura && im[z] == ima) || 
-                    (ur[z] == admin_uri && im[z] == admin_avatar) ) 
+    var liClass = ((ur[z] == ura && im[z] == ima) || 
+                   (ur[z] == admin_uri && im[z] == admin_avatar)) 
                   ? "rc-admin" : "rc-author";
 
     // Render HTML
@@ -116,7 +116,7 @@ function rc_avatar() {
     // Avatar bên trái
     e += '<img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/>';
 
-    // Khối text bên phải (theo cột)
+    // Khối text bên phải (theo cột dọc)
     e += '<div class="rc-text">';
     e += '<h4 class="rc-name">' + a[z] + '</h4>';        // tên tác giả
     e += '<p class="rc-content">' + j2[z] + '</p>';      // nội dung comment
