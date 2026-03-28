@@ -102,6 +102,9 @@ function rc_avatar() {
     }
     e += "</ul>";
     document.getElementById("rc-avatar-plus").innerHTML = e;
+
+    // Gọi hàm cập nhật câu hiển thị số bình luận
+    updateCommentSentence();
 }
 
 // Nạp feed chính
@@ -120,3 +123,4 @@ function updateCommentSentence() {
   var target = document.getElementById("commentSentence");
   if (target) target.innerText = sentence;
 }
+
