@@ -1,15 +1,14 @@
 <script type="text/javascript">
-// Cấu hình
-var maxComments = 30;          // số bình luận lấy về
-var maxNameLength = 30;        // giới hạn tên
-var maxContentLength = 100;    // giới hạn nội dung
-var defaultAvatar = "https://img.icons8.com/ios-filled/50/000000/user.png"; // avatar mặc định
-var blogUrl = "https://www.fearlessgeneration.xyz"; // thay bằng domain blog của bạn
-var adminName = "Admin";       // tên admin
-var adminAvatar = "https://img.icons8.com/color/48/000000/admin-settings-male.png"; // avatar admin
+// RecentComment.js
+// Widget hiển thị bình luận gần đây cho Blogger
 
-// Hàm hiển thị bình luận
-function rc_avatar1(json) {
+// Cấu hình
+var blogUrl = "https://YOURBLOG.blogspot.com"; // thay bằng domain blog của bạn
+var maxComments = 30;
+var defaultAvatar = "https://img.icons8.com/ios-filled/50/000000/user.png";
+
+// Hàm hiển thị danh sách bình luận
+function rc_avatar(json) {
   var comments = json.feed.entry || [];
   var html = "<ul>";
 
@@ -20,12 +19,7 @@ function rc_avatar1(json) {
     var content = (entry.content ? entry.content.$t : "").replace(/<.*?>/g, "");
     var avatar = (entry.author[0].gd$image ? entry.author[0].gd$image.src : defaultAvatar);
 
-    // Rút gọn tên và nội dung
-    if (author.length > maxNameLength) author = author.substring(0, maxNameLength) + "...";
-    if (content.length > maxContentLength) content = content.substring(0, maxContentLength) + "...";
-
-    // Nếu là admin thì dùng avatar riêng
-    if (author === adminName) avatar = adminAvatar;
+    if (content.length > 100) content = content.substring(0, 100) + "...";
 
     html += "<li style='margin-bottom:10px; display:flex; align-items:center;'>"
          + "<img src='" + avatar + "' style='width:32px;height:32px;border-radius:50%;margin-right:8px;'/>"
@@ -37,8 +31,19 @@ function rc_avatar1(json) {
   document.getElementById("rc-avatar-plus").innerHTML = html;
 }
 
-// Gọi feed bình luận Blogger
-var s = document.createElement("script");
-s.src = blogUrl + "/feeds/comments/default?alt=json-in-script&max-results=" + maxComments + "&callback=rc_avatar1";
-document.body.appendChild(s);
+// Hàm hiển thị tổng số bình luận
+function totalComments(json) {
+  document.getElementById("Stats1_totalComments").innerHTML = json.feed.openSearch$totalResults.$t;
+}
+
+// Tự động gọi feed bình luận Blogger
+(function() {
+  var s1 = document.createElement("script");
+  s1.src = blogUrl + "/feeds/comments/default?alt=json-in-script&max-results=" + maxComments + "&callback=rc_avatar";
+  document.body.appendChild(s1);
+
+  var s2 = document.createElement("script");
+  s2.src = blogUrl + "/feeds/comments/default?alt=json-in-script&max-results=0&callback=totalComments";
+  document.body.appendChild(s2);
+})();
 </script>
