@@ -3,7 +3,7 @@
 // Cấu hình
 var nc = 20;                 // số lượng bình luận
 var length_name = 20;        // độ dài tên
-var length_content = 100;    // độ dài nội dung bình luận
+var length_content = 64;    // độ dài nội dung bình luận
 
 // Trang chủ và admin
 var home_page = window.location.origin; 
