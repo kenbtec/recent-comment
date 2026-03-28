@@ -3,7 +3,7 @@
 // Widget hiển thị bình luận gần đây cho Blogger
 
 // Cấu hình
-var blogUrl = "https://YOURBLOG.blogspot.com"; // thay bằng domain blog của bạn
+var blogUrl = "https://www.fearlessgeneration.xyz"; // thay bằng domain blog của bạn
 var maxComments = 30;
 var defaultAvatar = "https://img.icons8.com/ios-filled/50/000000/user.png";
 
