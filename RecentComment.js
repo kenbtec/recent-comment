@@ -58,8 +58,8 @@ function rc_avatar1(tfeed) {
             j2[g] = e.substring(0, r) + "&#133;";
         }
 
-        // Tác giả
-        var a2 = c.author[0].name.$t;
+        // Tác giả (fallback nếu không có tên)
+        var a2 = c.author[0].name ? c.author[0].name.$t : "Anonymous";
         if (a2.length < length_name) a[g] = a2;
         else {
             a2 = a2.substring(0, length_name);
