@@ -88,7 +88,6 @@ function rc_avatar1(tfeed) {
 }
 
 // Hàm render ra HTML
-// Hàm render ra HTML (đã chỉnh sửa)
 function rc_avatar() {
     var e = "<ul>";
     for (var z = 0; z < nc && z < tt; z++) {
@@ -100,10 +99,16 @@ function rc_avatar() {
             r = (y !== -1 ? "&" + cp : "?" + cp);
         }
         e += '<li class="' + ((ur[z] == ura && im[z] == ima) || (ur[z] == admin_uri && im[z] == admin_avatar) ? "rc-admin" : "rc-author") + '">';
-        e += '<div class="rc-info"><img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/><h4>' + a[z] + '</h4></div>';
+        
+        // Tên tác giả hiển thị riêng một dòng
+        e += '<div class="rc-info">';
+        e += '<img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/>';
+        e += '<h4>' + a[z] + '</h4>';   // tên tác giả
+        e += '</div>';
+        
+        // Nội dung comment hiển thị riêng một dòng, in đậm màu đen
         e += '<a href="' + d[z] + r + p[z] + '" rel="nofollow" title="' + a[z] + " on " + t[z] + '">';
-        // Nội dung comment in đậm, màu đen
-        e += '<p class="rc-content">' + j2[z] + '</p>';
+        e += '<p class="rc-content">' + j2[z] + '</p>';   // nội dung comment
         if (pi[z] !== "true") e += "<span>" + ti[z] + "</span>";
         e += '</a><div class="clear"></div></li>';
     }
