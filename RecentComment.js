@@ -11,7 +11,7 @@ var length_content = 100;   // độ dài tối đa của nội dung
 var no_avatar = "https://1.bp.blogspot.com/-TrAcs0QeGmk/YPLQdMWjrcI/AAAAAAAAAm8/K1HEOZmwNFooyMLefdRqv4nMmtsgA0bSgCLcBGAsYHQ/s16000/favicon.png";
 
 // Trang chủ và avatar admin
-var home_page = "https://www.ngohoanganhtuan.net";
+var home_page = "https://https://www.fearlessgeneration.xyz";
 var admin_uri = "https://www.facebook.com/ngohoanganhtuan266/";
 var admin_avatar = no_avatar;
 
