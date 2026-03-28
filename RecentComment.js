@@ -37,7 +37,6 @@ function rc_avatar1(tfeed) {
 
     // Lấy tiêu đề feed
     tb = tfeed.feed.title.$t;
-
     // Nếu đang ở trang chủ thì bỏ chữ "Blog:"
     if (window.location.pathname === "/" || window.location.pathname === "/index.html") {
         tb = tb.replace(/^Blog:\s*/i, "");
@@ -62,12 +61,18 @@ function rc_avatar1(tfeed) {
         e = e.replace(/<br \/>/g, " ")
              .replace(/@<a.*?a>/g, "")
              .replace(/<[^>]*>/g, "");
-        if (e.length < length_content) {
+
+        if (e.length <= length_content) {
             j2[g] = e;
         } else {
-            e = e.substring(0, length_content);
-            var r = e.lastIndexOf(" ");
-            j2[g] = e.substring(0, r) + "&#133;";
+            // Cắt gọn đến độ dài cho phép
+            var truncated = e.substring(0, length_content);
+            // Tìm khoảng trắng gần nhất để không cắt lỡ chữ
+            var lastSpace = truncated.lastIndexOf(" ");
+            if (lastSpace > 0) {
+                truncated = truncated.substring(0, lastSpace);
+            }
+            j2[g] = truncated + "&#133;"; // thêm dấu …
         }
 
         // Tác giả
