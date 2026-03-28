@@ -106,8 +106,6 @@ function rc_avatar() {
     }
     e += "</ul>";
     document.getElementById("rc-avatar-plus").innerHTML = e;
-
-    updateCommentSentence()
 }
 
 // Hàm hiển thị câu đúng ngữ pháp
