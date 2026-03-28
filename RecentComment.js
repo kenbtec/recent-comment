@@ -41,7 +41,6 @@ function rc_avatar1(tfeed) {
 
     // Lấy tiêu đề feed
     tb = tfeed.feed.title.$t;
-    // Nếu đang ở trang chủ thì bỏ chữ "Blog:"
     if (window.location.pathname === "/" || window.location.pathname === "/index.html") {
         tb = tb.replace(/^Blog:\s*/i, "");
     }
@@ -56,8 +55,9 @@ function rc_avatar1(tfeed) {
         // 👉 Bỏ qua nếu comment đã bị xoá hoặc không có nội dung
         if (c.gd$deleted === "true" 
             || c.thr$deleted === "true" 
-            || (c.category && c.category[0].term === "deleted") 
-            || !c.content) {
+            || (c.category && c.category.some(cat => cat.term === "deleted")) 
+            || !c.content 
+            || (c.content && c.content.$t.trim() === "")) {
             continue;
         }
 
