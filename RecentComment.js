@@ -33,19 +33,16 @@ function rc_avatar2(a) {
 
 // Giới hạn ký tự nội dung bình luận
 var length_content = 50; 
-// Giới hạn ký tự tên tác giả
 var length_name = 20; 
 
 function rc_avatar1(tfeed) {
     tt = tfeed.feed.openSearch$totalResults.$t;
 
-    // Lấy tiêu đề feed
     tb = tfeed.feed.title.$t;
     if (window.location.pathname === "/" || window.location.pathname === "/index.html") {
         tb = tb.replace(/^Blog:\s*/i, "");
     }
 
-    // Lấy thông tin tác giả blog
     if ("uri" in tfeed.feed.author[0]) ura = tfeed.feed.author[0].uri.$t;
     ima = tfeed.feed.author[0].gd$image.src;
 
@@ -53,11 +50,14 @@ function rc_avatar1(tfeed) {
         var c = tfeed.feed.entry[g];
 
         // 👉 Bỏ qua nếu comment đã bị xoá hoặc không có nội dung
+        var rawContent = c.content ? c.content.$t : "";
         if (c.gd$deleted === "true" 
             || c.thr$deleted === "true" 
             || (c.category && c.category.some(cat => cat.term === "deleted")) 
-            || !c.content 
-            || (c.content && c.content.$t.trim() === "")) {
+            || !rawContent 
+            || rawContent.trim() === "" 
+            || /removed by the author/i.test(rawContent) 
+            || /deleted by the administrator/i.test(rawContent)) {
             continue;
         }
 
@@ -70,7 +70,7 @@ function rc_avatar1(tfeed) {
         p[g] = cid;
 
         // Nội dung bình luận
-        var e = c.content ? c.content.$t : (c.summary ? c.summary.$t : "&#8592;");
+        var e = rawContent;
         e = e.replace(/<br \/>/g, " ")
              .replace(/@<a.*?a>/g, "")
              .replace(/<[^>]*>/g, "");
@@ -83,7 +83,7 @@ function rc_avatar1(tfeed) {
             if (lastSpace > 0) {
                 truncated = truncated.substring(0, lastSpace);
             }
-            j2[g] = truncated + "&#133;"; // thêm dấu …
+            j2[g] = truncated + "&#133;";
         }
 
         // Tác giả
