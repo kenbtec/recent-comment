@@ -10,7 +10,7 @@ var home_page = window.location.origin;
 var admin_uri = 'https://www.facebook.com/leanhduc.pro.vn/';
 
 // Ảnh mặc định khi không có avatar
-var no_avatar = 'https://img.icons8.com/ios-filled/100/000000/user.png';
+var no_avatar = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjUv12wy7wUBrThObx-dWlnAaHA5wur1RC1E3wHVmC1dxuM9dg1xN1t0MAvGruqaxhtAiATsd8KVU7rmivwLR_3kFgTEVhCiPJg2g3917u71Pzlm612vnkQgRiBmMkf1fVeeW6RDuyax1YDjMOWqkTcPbPIlqzkCD-aNGcWO0FNVouCwBUC7FStm7k4RY-1/s320/unnamed%20(2).png';
 var admin_avatar = no_avatar;
 
 // Các biến toàn cục
