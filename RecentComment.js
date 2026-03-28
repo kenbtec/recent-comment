@@ -106,14 +106,14 @@ function rc_avatar() {
 
 // Hàm hiển thị câu đúng ngữ pháp
 function updateCommentSentence() {
-    var el = document.getElementById("totalComments_bottom");
-    if (!el) return;
-    var count = parseInt(el.innerText, 10);
-    var sentence = (count === 1) 
-      ? "There is 1 comment" 
-      : "There are " + count + " comments";
-    var target = document.getElementById("commentSentence");
-    if (target) target.innerText = sentence;
+  var el = document.getElementById("totalComments_bottom");
+  if (!el) return;
+  var count = parseInt(el.innerText, 10);
+  var sentence = (count === 1) 
+    ? "There is 1 comment" 
+    : "There are " + count + " comments";
+  var target = document.getElementById("commentSentence");
+  if (target) target.innerText = sentence;
 }
 
 // Nạp feed chính
