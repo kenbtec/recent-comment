@@ -89,32 +89,31 @@ function rc_avatar1(tfeed) {
 
 // Hàm render ra HTML
 function rc_avatar() {
-    var e = "<ul>";
-    for (var z = 0; z < nc && z < tt; z++) {
-        t[z] = t[z].replace("Comments on " + tb + ": ", "");
-        var r = "";
-        if (pn[z] === 1) r = "#c";
-        else {
-            var cp = "commentPage=" + pn[z] + "#c";
-            r = (y !== -1 ? "&" + cp : "?" + cp);
-        }
-
-        e += '<li class="' + ((ur[z] == ura && im[z] == ima) || (ur[z] == admin_uri && im[z] == admin_avatar) ? "rc-admin" : "rc-author") + '">';
-        e += '<div class="rc-item">';
-        e += '<a href="' + d[z] + r + p[z] + '" rel="nofollow" title="' + a[z] + " on " + t[z] + '">';
-        e += '<img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/>';
-        e += '<div class="rc-text">';
-        e += '<h4 class="rc-name">' + a[z] + '</h4>';        // tên tác giả
-        e += '<p class="rc-content">' + j2[z] + '</p>';      // nội dung comment
-        if (pi[z] !== "true") e += "<span class='rc-date'>" + ti[z] + "</span>"; // ngày tháng
-        e += '</div>'; // đóng rc-text
-        e += '</a>';
-        e += '</div>';
-        e += '</li>';
+  var e = "<ul>";
+  for (var z = 0; z < nc && z < tt; z++) {
+    t[z] = t[z].replace("Comments on " + tb + ": ", "");
+    var r = "";
+    if (pn[z] === 1) r = "#c";
+    else {
+      var cp = "commentPage=" + pn[z] + "#c";
+      r = (y !== -1 ? "&" + cp : "?" + cp);
     }
-    e += "</ul>";
-    document.getElementById("rc-avatar-plus").innerHTML = e;
+
+    e += '<li class="' + ((ur[z] == ura && im[z] == ima) || (ur[z] == admin_uri && im[z] == admin_avatar) ? "rc-admin" : "rc-author") + '">';
+    e += '<div class="rc-item">';
+    e += '<img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/>'; // avatar bên trái
+    e += '<div class="rc-text">'; // khối bên phải
+    e += '<h4 class="rc-name">' + a[z] + '</h4>';        // tên tác giả
+    e += '<p class="rc-content">' + j2[z] + '</p>';      // nội dung comment
+    if (pi[z] !== "true") e += "<span class='rc-date'>" + ti[z] + "</span>"; // ngày tháng
+    e += '</div>'; // đóng rc-text
+    e += '</div>';
+    e += '</li>';
+  }
+  e += "</ul>";
+  document.getElementById("rc-avatar-plus").innerHTML = e;
 }
+
 
 // Hàm hiển thị câu đúng ngữ pháp
 function updateCommentSentence() {
