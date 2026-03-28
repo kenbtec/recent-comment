@@ -91,26 +91,47 @@ function rc_avatar1(tfeed) {
 function rc_avatar() {
   var e = "<ul>";
   for (var z = 0; z < nc && z < tt; z++) {
+    // Xử lý tiêu đề bài viết
     t[z] = t[z].replace("Comments on " + tb + ": ", "");
     var r = "";
-    if (pn[z] === 1) r = "#c";
-    else {
+    if (pn[z] === 1) {
+      r = "#c";
+    } else {
       var cp = "commentPage=" + pn[z] + "#c";
       r = (y !== -1 ? "&" + cp : "?" + cp);
     }
 
-    e += '<li class="' + ((ur[z] == ura && im[z] == ima) || (ur[z] == admin_uri && im[z] == admin_avatar) ? "rc-admin" : "rc-author") + '">';
+    // Xác định class admin/author
+    var liClass = ( (ur[z] == ura && im[z] == ima) || 
+                    (ur[z] == admin_uri && im[z] == admin_avatar) ) 
+                  ? "rc-admin" : "rc-author";
+
+    // Render HTML
+    e += '<li class="' + liClass + '">';
     e += '<div class="rc-item">';
-    e += '<img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/>'; // avatar bên trái
-    e += '<div class="rc-text">'; // khối bên phải
+
+    // Bọc avatar + text trong cùng một <a>
+    e += '<a href="' + d[z] + r + p[z] + '" rel="nofollow" title="' + a[z] + " on " + t[z] + '" class="rc-link">';
+
+    // Avatar bên trái
+    e += '<img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/>';
+
+    // Khối text bên phải (theo cột)
+    e += '<div class="rc-text">';
     e += '<h4 class="rc-name">' + a[z] + '</h4>';        // tên tác giả
     e += '<p class="rc-content">' + j2[z] + '</p>';      // nội dung comment
-    if (pi[z] !== "true") e += "<span class='rc-date'>" + ti[z] + "</span>"; // ngày tháng
+    if (pi[z] !== "true") {
+      e += "<span class='rc-date'>" + ti[z] + "</span>"; // ngày tháng
+    }
     e += '</div>'; // đóng rc-text
-    e += '</div>';
+
+    e += '</a>'; // đóng link
+    e += '</div>'; // đóng rc-item
     e += '</li>';
   }
   e += "</ul>";
+
+  // Gắn vào DOM
   document.getElementById("rc-avatar-plus").innerHTML = e;
 }
 
