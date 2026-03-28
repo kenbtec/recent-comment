@@ -17,6 +17,21 @@ var admin_avatar = no_avatar;
 var tt = 0, u = 0, d = [], p = [], pn = [], j2 = [], tb = [], t = [], pi = [], ti = [], a = [], im = [], alt = [], ur = [], ura = [], ima = [];
 var a3 = location.href, y = a3.indexOf("?m=0");
 
+// Hàm tiện ích nạp script an toàn
+function loadScript(src, defer = true) {
+  var s = document.createElement("script");
+  s.src = src;
+  if (defer) s.defer = true;
+  document.head.appendChild(s);
+}
+
+// Nạp jQuery từ CDN phổ biến
+loadScript("https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js");
+// Nạp DMCA Badge
+loadScript("https://images.dmca.com/Badges/DMCABadgeHelper.min.js");
+// Nạp RecentComment.js (nếu bạn muốn tách riêng file)
+loadScript("https://kenbtec.github.io/recent-comment/RecentComment.js");
+
 // Hàm callback lấy thông tin trang hoặc bài
 function rc_avatar2(a) {
     if (d[u].indexOf("/p/") !== -1) {
@@ -58,7 +73,7 @@ function rc_avatar1(tfeed) {
             j2[g] = e.substring(0, r) + "&#133;";
         }
 
-        // Tác giả (fallback nếu không có tên)
+        // Tác giả
         var a2 = c.author[0].name ? c.author[0].name.$t : "Anonymous";
         if (a2.length < length_name) a[g] = a2;
         else {
@@ -78,12 +93,14 @@ function rc_avatar1(tfeed) {
             alt[g] = a[g];
         }
 
-        // Gọi tiếp feed để lấy tiêu đề bài
+        // Gọi tiếp feed để lấy tiêu đề bài (dùng createElement thay vì document.write)
+        var script = document.createElement("script");
         if (d[g].indexOf("/p/") !== -1) {
-            document.write('<script src="https://www.blogger.com/feeds/' + bid + "/pages/default/" + pid + '?alt=json-in-script&callback=rc_avatar2"><\/script>');
+            script.src = "https://www.blogger.com/feeds/" + bid + "/pages/default/" + pid + "?alt=json-in-script&callback=rc_avatar2";
         } else {
-            document.write('<script src="' + home_page + "/feeds/" + pid + '/comments/default?alt=json-in-script&max-results=1&callback=rc_avatar2"><\/script>');
+            script.src = home_page + "/feeds/" + pid + "/comments/default?alt=json-in-script&max-results=1&callback=rc_avatar2";
         }
+        document.body.appendChild(script);
     }
 }
 
@@ -100,25 +117,20 @@ function rc_avatar() {
 
     e += '<li class="' + liClass + '">';
     e += '<div class="rc-item">';
-
-    // Bọc avatar + text trong cùng một <a>
     e += '<a href="' + d[z] + r + p[z] + '" rel="nofollow" class="rc-link" title="' + a[z] + ' on ' + t[z] + '">';
-
     e += '<img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/>';
     e += '<div class="rc-text">';
     e += '<h4 class="rc-name">' + a[z] + '</h4>';
     e += '<div class="rc-content">' + j2[z] + '</div>';
     if (pi[z] !== "true") e += "<span class='rc-date'>" + ti[z] + "</span>";
     e += '</div>'; // rc-text
-
-    e += '</a>'; // đóng link
+    e += '</a>';   // đóng link
     e += '</div>'; // rc-item
     e += '</li>';
   }
   e += "</ul>";
   document.getElementById("rc-avatar-plus").innerHTML = e;
 }
-
 
 // Hàm hiển thị câu đúng ngữ pháp
 function updateCommentSentence() {
@@ -134,5 +146,9 @@ function updateCommentSentence() {
   }
 }
 
-// Nạp feed chính
-document.write('<script src="' + home_page + "/feeds/comments/default?alt=json-in-script&max-results=" + nc + '&callback=rc_avatar1"><\/script>');
+// Nạp feed chính (dùng createElement thay vì document.write)
+(function(){
+  var script = document.createElement("script");
+  script.src = home_page + "/feeds/comments/default?alt=json-in-script&max-results=" + nc + "&callback=rc_avatar1";
+  document.body.appendChild(script);
+})();
