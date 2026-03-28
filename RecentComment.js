@@ -33,24 +33,31 @@ function rc_avatar2(a) {
 
 // Giới hạn ký tự nội dung bình luận
 var length_content = 50; 
+// Giới hạn ký tự tên tác giả
 var length_name = 20; 
 
 function rc_avatar1(tfeed) {
     tt = tfeed.feed.openSearch$totalResults.$t;
 
+    // Lấy tiêu đề feed
     tb = tfeed.feed.title.$t;
+    // Nếu đang ở trang chủ thì bỏ chữ "Blog:"
     if (window.location.pathname === "/" || window.location.pathname === "/index.html") {
         tb = tb.replace(/^Blog:\s*/i, "");
     }
 
+    // Lấy thông tin tác giả blog
     if ("uri" in tfeed.feed.author[0]) ura = tfeed.feed.author[0].uri.$t;
     ima = tfeed.feed.author[0].gd$image.src;
 
     for (var g = 0; g < nc && g < tt; g++) {
         var c = tfeed.feed.entry[g];
 
-        // 👉 Bỏ qua nếu comment đã bị xoá
-        if (c.gd$deleted === "true" || !c.content) {
+        // 👉 Bỏ qua nếu comment đã bị xoá hoặc không có nội dung
+        if (c.gd$deleted === "true" 
+            || c.thr$deleted === "true" 
+            || (c.category && c.category[0].term === "deleted") 
+            || !c.content) {
             continue;
         }
 
@@ -76,7 +83,7 @@ function rc_avatar1(tfeed) {
             if (lastSpace > 0) {
                 truncated = truncated.substring(0, lastSpace);
             }
-            j2[g] = truncated + "&#133;";
+            j2[g] = truncated + "&#133;"; // thêm dấu …
         }
 
         // Tác giả
