@@ -12,7 +12,7 @@ var hideCredits = true;               // ẩn phần credit
 var moreLinktext = " More »";         // text cho link "More"
 
 // Hàm chính hiển thị bình luận
-function idbcomments(json) {
+function rc_avatar(json) {
   var html = "<ul class='idbcomments'>";
   var entries = json.feed.entry || [];
 
@@ -48,5 +48,5 @@ function idbcomments(json) {
     html += "<div style='display:block;'>Recent Comment By Ngô Hoàng Anh Tuấn</div>";
   }
 
-  document.write(html);
+  document.getElementById("rc-avatar-plus").innerHTML = html;
 }
