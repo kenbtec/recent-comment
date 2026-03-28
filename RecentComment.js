@@ -103,9 +103,11 @@ function rc_avatar() {
         e += '<div class="rc-item">';
         e += '<a href="' + d[z] + r + p[z] + '" rel="nofollow" title="' + a[z] + " on " + t[z] + '">';
         e += '<img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/>';
-        e += '<h4 class="rc-name">' + a[z] + '</h4>';
-        e += '<p class="rc-content">' + j2[z] + '</p>';
-        if (pi[z] !== "true") e += "<span class='rc-date'>" + ti[z] + "</span>";
+        e += '<div class="rc-text">';
+        e += '<h4 class="rc-name">' + a[z] + '</h4>';        // tên tác giả
+        e += '<p class="rc-content">' + j2[z] + '</p>';      // nội dung comment
+        if (pi[z] !== "true") e += "<span class='rc-date'>" + ti[z] + "</span>"; // ngày tháng
+        e += '</div>'; // đóng rc-text
         e += '</a>';
         e += '</div>';
         e += '</li>';
