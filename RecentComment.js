@@ -7,7 +7,7 @@ var length_content = 100;    // độ dài nội dung bình luận
 
 // Trang chủ và admin
 var home_page = window.location.origin; 
-var admin_uri = 'https://www.facebook.com/ngohoanganhtuan266';
+var admin_uri = 'https://www.facebook.com/leanhduc.pro.vn/';
 
 // Ảnh mặc định khi không có avatar
 var no_avatar = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjUv12wy7wUBrThObx-dWlnAaHA5wur1RC1E3wHVmC1dxuM9dg1xN1t0MAvGruqaxhtAiATsd8KVU7rmivwLR_3kFgTEVhCiPJg2g3917u71Pzlm612vnkQgRiBmMkf1fVeeW6RDuyax1YDjMOWqkTcPbPIlqzkCD-aNGcWO0FNVouCwBUC7FStm7k4RY-1/s320/unnamed%20(2).png';
@@ -58,7 +58,7 @@ function rc_avatar1(tfeed) {
             j2[g] = e.substring(0, r) + "&#133;";
         }
 
-        // Tác giả
+        // Tác giả (fallback nếu không có tên)
         var a2 = c.author[0].name ? c.author[0].name.$t : "Anonymous";
         if (a2.length < length_name) a[g] = a2;
         else {
@@ -78,14 +78,12 @@ function rc_avatar1(tfeed) {
             alt[g] = a[g];
         }
 
-        // Gọi tiếp feed để lấy tiêu đề bài (dùng createElement thay vì document.write)
-        var script = document.createElement("script");
+        // Gọi tiếp feed để lấy tiêu đề bài
         if (d[g].indexOf("/p/") !== -1) {
-            script.src = "https://www.blogger.com/feeds/" + bid + "/pages/default/" + pid + "?alt=json-in-script&callback=rc_avatar2";
+            document.write('<script src="https://www.blogger.com/feeds/' + bid + "/pages/default/" + pid + '?alt=json-in-script&callback=rc_avatar2"><\/script>');
         } else {
-            script.src = home_page + "/feeds/" + pid + "/comments/default?alt=json-in-script&max-results=1&callback=rc_avatar2";
+            document.write('<script src="' + home_page + "/feeds/" + pid + '/comments/default?alt=json-in-script&max-results=1&callback=rc_avatar2"><\/script>');
         }
-        document.body.appendChild(script);
     }
 }
 
@@ -102,20 +100,25 @@ function rc_avatar() {
 
     e += '<li class="' + liClass + '">';
     e += '<div class="rc-item">';
+
+    // Bọc avatar + text trong cùng một <a>
     e += '<a href="' + d[z] + r + p[z] + '" rel="nofollow" class="rc-link" title="' + a[z] + ' on ' + t[z] + '">';
+
     e += '<img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/>';
     e += '<div class="rc-text">';
     e += '<h4 class="rc-name">' + a[z] + '</h4>';
     e += '<div class="rc-content">' + j2[z] + '</div>';
     if (pi[z] !== "true") e += "<span class='rc-date'>" + ti[z] + "</span>";
     e += '</div>'; // rc-text
-    e += '</a>';   // đóng link
+
+    e += '</a>'; // đóng link
     e += '</div>'; // rc-item
     e += '</li>';
   }
   e += "</ul>";
   document.getElementById("rc-avatar-plus").innerHTML = e;
 }
+
 
 // Hàm hiển thị câu đúng ngữ pháp
 function updateCommentSentence() {
@@ -131,9 +134,5 @@ function updateCommentSentence() {
   }
 }
 
-// Nạp feed chính (dùng createElement thay vì document.write)
-(function(){
-  var script = document.createElement("script");
-  script.src = home_page + "/feeds/comments/default?alt=json-in-script&max-results=" + nc + "&callback=rc_avatar1";
-  document.body.appendChild(script);
-})();
+// Nạp feed chính
+document.write('<script src="' + home_page + "/feeds/comments/default?alt=json-in-script&max-results=" + nc + '&callback=rc_avatar1"><\/script>');
