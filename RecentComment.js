@@ -34,7 +34,16 @@ function rc_avatar2(a) {
 // Hàm callback lấy danh sách comment
 function rc_avatar1(tfeed) {
     tt = tfeed.feed.openSearch$totalResults.$t;
+
+    // Lấy tiêu đề feed
     tb = tfeed.feed.title.$t;
+
+    // Nếu đang ở trang chủ thì bỏ chữ "Blog:"
+    if (window.location.pathname === "/" || window.location.pathname === "/index.html") {
+        tb = tb.replace(/^Blog:\s*/i, "");
+    }
+
+    // Lấy thông tin tác giả blog
     if ("uri" in tfeed.feed.author[0]) ura = tfeed.feed.author[0].uri.$t;
     ima = tfeed.feed.author[0].gd$image.src;
 
@@ -48,20 +57,24 @@ function rc_avatar1(tfeed) {
         ti[g] = c.gd$extendedProperty[1].value;
         p[g] = cid;
 
-        // Nội dung
+        // Nội dung bình luận
         var e = c.content ? c.content.$t : (c.summary ? c.summary.$t : "&#8592;");
-        e = e.replace(/<br \/>/g, " ").replace(/@<a.*?a>/g, "").replace(/<[^>]*>/g, "");
-        if (e.length < length_content) j2[g] = e;
-        else {
+        e = e.replace(/<br \/>/g, " ")
+             .replace(/@<a.*?a>/g, "")
+             .replace(/<[^>]*>/g, "");
+        if (e.length < length_content) {
+            j2[g] = e;
+        } else {
             e = e.substring(0, length_content);
             var r = e.lastIndexOf(" ");
             j2[g] = e.substring(0, r) + "&#133;";
         }
 
-        // Tác giả (fallback nếu không có tên)
+        // Tác giả
         var a2 = c.author[0].name ? c.author[0].name.$t : "Anonymous";
-        if (a2.length < length_name) a[g] = a2;
-        else {
+        if (a2.length < length_name) {
+            a[g] = a2;
+        } else {
             a2 = a2.substring(0, length_name);
             a[g] = a2 + "&#133;";
         }
@@ -78,12 +91,14 @@ function rc_avatar1(tfeed) {
             alt[g] = a[g];
         }
 
-        // Gọi tiếp feed để lấy tiêu đề bài
+        // Nạp feed để lấy tiêu đề bài viết (dùng createElement thay vì document.write)
+        var script = document.createElement("script");
         if (d[g].indexOf("/p/") !== -1) {
-            document.write('<script src="https://www.blogger.com/feeds/' + bid + "/pages/default/" + pid + '?alt=json-in-script&callback=rc_avatar2"><\/script>');
+            script.src = "https://www.blogger.com/feeds/" + bid + "/pages/default/" + pid + "?alt=json-in-script&callback=rc_avatar2";
         } else {
-            document.write('<script src="' + home_page + "/feeds/" + pid + '/comments/default?alt=json-in-script&max-results=1&callback=rc_avatar2"><\/script>');
+            script.src = home_page + "/feeds/" + pid + "/comments/default?alt=json-in-script&max-results=1&callback=rc_avatar2";
         }
+        document.body.appendChild(script);
     }
 }
 
