@@ -17,21 +17,6 @@ var admin_avatar = no_avatar;
 var tt = 0, u = 0, d = [], p = [], pn = [], j2 = [], tb = [], t = [], pi = [], ti = [], a = [], im = [], alt = [], ur = [], ura = [], ima = [];
 var a3 = location.href, y = a3.indexOf("?m=0");
 
-// Hàm tiện ích nạp script an toàn
-function loadScript(src, defer = true) {
-  var s = document.createElement("script");
-  s.src = src;
-  if (defer) s.defer = true;
-  document.head.appendChild(s);
-}
-
-// Nạp jQuery từ CDN phổ biến
-loadScript("https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js");
-// Nạp DMCA Badge
-loadScript("https://images.dmca.com/Badges/DMCABadgeHelper.min.js");
-// Nạp RecentComment.js (nếu bạn muốn tách riêng file)
-loadScript("https://kenbtec.github.io/recent-comment/RecentComment.js");
-
 // Hàm callback lấy thông tin trang hoặc bài
 function rc_avatar2(a) {
     if (d[u].indexOf("/p/") !== -1) {
