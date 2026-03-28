@@ -31,23 +31,29 @@ function rc_avatar2(a) {
     u++;
 }
 
-// Hàm callback lấy danh sách comment
+// Giới hạn ký tự nội dung bình luận
+var length_content = 50; 
+var length_name = 20; 
+
 function rc_avatar1(tfeed) {
     tt = tfeed.feed.openSearch$totalResults.$t;
 
-    // Lấy tiêu đề feed
     tb = tfeed.feed.title.$t;
-    // Nếu đang ở trang chủ thì bỏ chữ "Blog:"
     if (window.location.pathname === "/" || window.location.pathname === "/index.html") {
         tb = tb.replace(/^Blog:\s*/i, "");
     }
 
-    // Lấy thông tin tác giả blog
     if ("uri" in tfeed.feed.author[0]) ura = tfeed.feed.author[0].uri.$t;
     ima = tfeed.feed.author[0].gd$image.src;
 
     for (var g = 0; g < nc && g < tt; g++) {
         var c = tfeed.feed.entry[g];
+
+        // 👉 Bỏ qua nếu comment đã bị xoá
+        if (c.gd$deleted === "true" || !c.content) {
+            continue;
+        }
+
         var lkParts = c.link[0].href.split("/");
         var bid = lkParts[4], pid = lkParts[5], cid = lkParts[8];
         d[g] = c["thr$in-reply-to"].href;
@@ -65,14 +71,12 @@ function rc_avatar1(tfeed) {
         if (e.length <= length_content) {
             j2[g] = e;
         } else {
-            // Cắt gọn đến độ dài cho phép
             var truncated = e.substring(0, length_content);
-            // Tìm khoảng trắng gần nhất để không cắt lỡ chữ
             var lastSpace = truncated.lastIndexOf(" ");
             if (lastSpace > 0) {
                 truncated = truncated.substring(0, lastSpace);
             }
-            j2[g] = truncated + "&#133;"; // thêm dấu …
+            j2[g] = truncated + "&#133;";
         }
 
         // Tác giả
@@ -96,7 +100,7 @@ function rc_avatar1(tfeed) {
             alt[g] = a[g];
         }
 
-        // Nạp feed để lấy tiêu đề bài viết (dùng createElement thay vì document.write)
+        // Nạp feed để lấy tiêu đề bài viết
         var script = document.createElement("script");
         if (d[g].indexOf("/p/") !== -1) {
             script.src = "https://www.blogger.com/feeds/" + bid + "/pages/default/" + pid + "?alt=json-in-script&callback=rc_avatar2";
