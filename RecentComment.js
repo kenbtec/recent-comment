@@ -1,4 +1,4 @@
-// Recent Comments free version 3.2 by KenaT
+// Recent Comments free version 3.2 by KenaT (đã chỉnh sửa)
 
 // Cấu hình
 var nc = 20;                 // số lượng bình luận
@@ -10,7 +10,7 @@ var home_page = window.location.origin;
 var admin_uri = 'https://www.facebook.com/leanhduc.pro.vn/';
 
 // Ảnh mặc định khi không có avatar
-var no_avatar = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjUv12wy7wUBrThObx-dWlnAaHA5wur1RC1E3wHVmC1dxuM9dg1xN1t0MAvGruqaxhtAiATsd8KVU7rmivwLR_3kFgTEVhCiPJg2g3917u71Pzlm612vnkQgRiBmMkf1fVeeW6RDuyax1YDjMOWqkTcPbPIlqzkCD-aNGcWO0FNVouCwBUC7FStm7k4RY-1/s320/unnamed%20(2).png';
+var no_avatar = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/.../unnamed%20(2).png';
 var admin_avatar = no_avatar;
 
 // Các biến toàn cục
@@ -68,7 +68,7 @@ function rc_avatar1(tfeed) {
 
         if ("uri" in c.author[0]) ur[g] = c.author[0].uri.$t;
 
-        // Avatar: nếu là blank.gif thì thay bằng ảnh mặc định
+        // Avatar
         var avatarSrc = c.author[0].gd$image.src;
         if (avatarSrc.indexOf("blank.gif") !== -1) {
             im[g] = no_avatar;
@@ -98,19 +98,17 @@ function rc_avatar() {
             var cp = "commentPage=" + pn[z] + "#c";
             r = (y !== -1 ? "&" + cp : "?" + cp);
         }
+
         e += '<li class="' + ((ur[z] == ura && im[z] == ima) || (ur[z] == admin_uri && im[z] == admin_avatar) ? "rc-admin" : "rc-author") + '">';
-
-        // Avatar + tên tác giả (một dòng riêng)
-        e += '<div class="rc-info">';
-        e += '<img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/>';
-        e += '<h4>' + a[z] + '</h4>';   // tên tác giả
-        e += '</div>';
-
-        // Nội dung comment (một dòng riêng, in đậm màu đen)
+        e += '<div class="rc-item">';
         e += '<a href="' + d[z] + r + p[z] + '" rel="nofollow" title="' + a[z] + " on " + t[z] + '">';
-        e += '<p class="rc-content">' + j2[z] + '</p>';   // nội dung comment
-        if (pi[z] !== "true") e += "<span>" + ti[z] + "</span>";
-        e += '</a><div class="clear"></div></li>';
+        e += '<img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/>';
+        e += '<h4 class="rc-name">' + a[z] + '</h4>';
+        e += '<p class="rc-content">' + j2[z] + '</p>';
+        if (pi[z] !== "true") e += "<span class='rc-date'>" + ti[z] + "</span>";
+        e += '</a>';
+        e += '</div>';
+        e += '</li>';
     }
     e += "</ul>";
     document.getElementById("rc-avatar-plus").innerHTML = e;
