@@ -3,7 +3,7 @@
 // Cấu hình
 var nc = 20;                 // số lượng bình luận
 var length_name = 20;        // độ dài tên
-var length_content = 100;    // độ dài nội dung bình luận
+var length_content = 54;    // độ dài nội dung bình luận
 
 // Trang chủ và admin
 var home_page = window.location.origin; 
@@ -31,27 +31,15 @@ function rc_avatar2(a) {
     u++;
 }
 
-// Giới hạn ký tự nội dung bình luận
-var length_content = 60; 
-// Giới hạn ký tự tên tác giả
-var length_name = 20; 
-
+// Hàm callback lấy danh sách comment
 function rc_avatar1(tfeed) {
     tt = tfeed.feed.openSearch$totalResults.$t;
-
-    // Lấy tiêu đề feed
     tb = tfeed.feed.title.$t;
-    if (window.location.pathname === "/" || window.location.pathname === "/index.html") {
-        tb = tb.replace(/^Blog:\s*/i, "");
-    }
-
-    // Lấy thông tin tác giả blog
     if ("uri" in tfeed.feed.author[0]) ura = tfeed.feed.author[0].uri.$t;
     ima = tfeed.feed.author[0].gd$image.src;
 
     for (var g = 0; g < nc && g < tt; g++) {
         var c = tfeed.feed.entry[g];
-
         var lkParts = c.link[0].href.split("/");
         var bid = lkParts[4], pid = lkParts[5], cid = lkParts[8];
         d[g] = c["thr$in-reply-to"].href;
@@ -60,28 +48,20 @@ function rc_avatar1(tfeed) {
         ti[g] = c.gd$extendedProperty[1].value;
         p[g] = cid;
 
-        // Nội dung bình luận
+        // Nội dung
         var e = c.content ? c.content.$t : (c.summary ? c.summary.$t : "&#8592;");
-        e = e.replace(/<br \/>/g, " ")
-             .replace(/@<a.*?a>/g, "")
-             .replace(/<[^>]*>/g, "");
-
-        if (e.length <= length_content) {
-            j2[g] = e;
-        } else {
-            var truncated = e.substring(0, length_content);
-            var lastSpace = truncated.lastIndexOf(" ");
-            if (lastSpace > 0) {
-                truncated = truncated.substring(0, lastSpace);
-            }
-            j2[g] = truncated + "&#133;"; // thêm dấu …
+        e = e.replace(/<br \/>/g, " ").replace(/@<a.*?a>/g, "").replace(/<[^>]*>/g, "");
+        if (e.length < length_content) j2[g] = e;
+        else {
+            e = e.substring(0, length_content);
+            var r = e.lastIndexOf(" ");
+            j2[g] = e.substring(0, r) + "&#133;";
         }
 
-        // Tác giả
+        // Tác giả (fallback nếu không có tên)
         var a2 = c.author[0].name ? c.author[0].name.$t : "Anonymous";
-        if (a2.length < length_name) {
-            a[g] = a2;
-        } else {
+        if (a2.length < length_name) a[g] = a2;
+        else {
             a2 = a2.substring(0, length_name);
             a[g] = a2 + "&#133;";
         }
@@ -98,14 +78,12 @@ function rc_avatar1(tfeed) {
             alt[g] = a[g];
         }
 
-        // Nạp feed để lấy tiêu đề bài viết
-        var script = document.createElement("script");
+        // Gọi tiếp feed để lấy tiêu đề bài
         if (d[g].indexOf("/p/") !== -1) {
-            script.src = "https://www.blogger.com/feeds/" + bid + "/pages/default/" + pid + "?alt=json-in-script&callback=rc_avatar2";
+            document.write('<script src="https://www.blogger.com/feeds/' + bid + "/pages/default/" + pid + '?alt=json-in-script&callback=rc_avatar2"><\/script>');
         } else {
-            script.src = home_page + "/feeds/" + pid + "/comments/default?alt=json-in-script&max-results=1&callback=rc_avatar2";
+            document.write('<script src="' + home_page + "/feeds/" + pid + '/comments/default?alt=json-in-script&max-results=1&callback=rc_avatar2"><\/script>');
         }
-        document.body.appendChild(script);
     }
 }
 
