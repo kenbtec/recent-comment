@@ -1,14 +1,12 @@
 // Recent Comments free version 3.2 by KenaT
 
-var copyright_by_kenat = 'Recent Comments free version 3.2 by KenaT';
-
 // Cấu hình
 var nc = 20;                 // số lượng bình luận
 var length_name = 20;        // độ dài tên
 var length_content = 100;    // độ dài nội dung bình luận
 
 // Trang chủ và admin
-var home_page = window.location.origin; // tự động lấy URL blog hiện tại
+var home_page = window.location.origin; 
 var admin_uri = 'https://www.facebook.com/leanhduc.pro.vn/';
 var no_avatar = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgho8BlJ4qgBtNEvwN3bXOqi9KHgIEGcup6TS9_SoY1Fbr2P9G__gtDCXJMvV1vbpPBBYlK-mWAS5esD2tiFPLeunuJspwi8C9lT4Pd_lDrCS3VEmnxWDR0IYNTLai0nL_PDDIrRwO5Am90/s16000/favicon-1000x1000.png';
 var admin_avatar = no_avatar;
@@ -39,7 +37,7 @@ function rc_avatar1(tfeed) {
     if ("uri" in tfeed.feed.author[0]) ura = tfeed.feed.author[0].uri.$t;
     ima = tfeed.feed.author[0].gd$image.src;
 
-    for (var g = 0; g < nc && g < tt && g < tfeed.feed.entry.length; g++) {
+    for (var g = 0; g < nc && g < tt && g++) {
         var c = tfeed.feed.entry[g];
         var lkParts = c.link[0].href.split("/");
         var bid = lkParts[4], pid = lkParts[5], cid = lkParts[8];
@@ -68,10 +66,15 @@ function rc_avatar1(tfeed) {
         }
 
         if ("uri" in c.author[0]) ur[g] = c.author[0].uri.$t;
-        if (c.author[0].gd$image.src === "http://img1.blogblog.com/img/blank.gif") {
-            im[g] = no_avatar; alt[g] = "no avatar";
+
+        // Avatar: nếu là blank.gif thì thay bằng ảnh mặc định
+        var avatarSrc = c.author[0].gd$image.src;
+        if (avatarSrc.indexOf("blank.gif") !== -1) {
+            im[g] = no_avatar;
+            alt[g] = "no avatar";
         } else {
-            im[g] = c.author[0].gd$image.src; alt[g] = a[g];
+            im[g] = avatarSrc;
+            alt[g] = a[g];
         }
 
         // Gọi tiếp feed để lấy tiêu đề bài
@@ -103,13 +106,8 @@ function rc_avatar() {
     e += "</ul>";
     document.getElementById("rc-avatar-plus").innerHTML = e;
 
-    // Gọi hàm cập nhật câu hiển thị số bình luận
+    // Sau khi render xong, cập nhật câu hiển thị số bình luận
     updateCommentSentence();
-}
-
-// Nạp feed chính
-if (copyright_by_kenat === "Recent Comments free version 3.2 by " + ad) {
-    document.write('<script src="' + home_page + "/feeds/comments/default?alt=json-in-script&max-results=" + nc + '&callback=rc_avatar1"><\/script>');
 }
 
 // Hàm hiển thị câu đúng ngữ pháp
@@ -121,6 +119,10 @@ function updateCommentSentence() {
     ? "There is 1 comment" 
     : "There are " + count + " comments";
   var target = document.getElementById("commentSentence");
-  if (target) target.innerText = sentence;
+  if (target) {
+    target.innerText = sentence;
+  }
 }
 
+// Nạp feed chính
+document.write('<script src="' + home_page + "/feeds/comments/default?alt=json-in-script&max-results=" + nc + '&callback=rc_avatar1"><\/script>');
