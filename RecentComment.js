@@ -32,7 +32,7 @@ function rc_avatar2(a) {
 }
 
 // Giới hạn ký tự nội dung bình luận
-var length_content = 50; 
+var length_content = 60; 
 var length_name = 20; 
 
 function rc_avatar1(tfeed) {
@@ -48,18 +48,6 @@ function rc_avatar1(tfeed) {
 
     for (var g = 0; g < nc && g < tt; g++) {
         var c = tfeed.feed.entry[g];
-
-        // 👉 Bỏ qua nếu comment đã bị xoá hoặc không có nội dung
-        var rawContent = c.content ? c.content.$t : "";
-        if (c.gd$deleted === "true" 
-            || c.thr$deleted === "true" 
-            || (c.category && c.category.some(cat => cat.term === "deleted")) 
-            || !rawContent 
-            || rawContent.trim() === "" 
-            || /removed by the author/i.test(rawContent) 
-            || /deleted by the administrator/i.test(rawContent)) {
-            continue;
-        }
 
         var lkParts = c.link[0].href.split("/");
         var bid = lkParts[4], pid = lkParts[5], cid = lkParts[8];
