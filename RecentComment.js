@@ -14,8 +14,7 @@ var no_avatar = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjUv1
 var admin_avatar = no_avatar;
 
 // Các biến toàn cục
-var tt = 0, u = 0, lk = [], d = [], p = [], pn = [], j2 = [], tb = [], t = [], pi = [], ti = [], a = [], im = [], alt = [], ur = [], ura = [], ima = [];
-var ad = "KenaT";
+var tt = 0, u = 0, d = [], p = [], pn = [], j2 = [], tb = [], t = [], pi = [], ti = [], a = [], im = [], alt = [], ur = [], ura = [], ima = [];
 var a3 = location.href, y = a3.indexOf("?m=0");
 
 // Hàm callback lấy thông tin trang hoặc bài
@@ -97,4 +96,34 @@ function rc_avatar() {
         if (pn[z] === 1) r = "#c";
         else {
             var cp = "commentPage=" + pn[z] + "#c";
-            r = (y !== -1 ?
+            r = (y !== -1 ? "&" + cp : "?" + cp);
+        }
+        e += '<li class="' + ((ur[z] == ura && im[z] == ima) || (ur[z] == admin_uri && im[z] == admin_avatar) ? "rc-admin" : "rc-author") + '">';
+        e += '<div class="rc-info"><img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/><h4>' + a[z] + '</h4></div>';
+        e += '<a href="' + d[z] + r + p[z] + '" rel="nofollow" title="' + a[z] + " on " + t[z] + '"><p>' + j2[z] + "</p>";
+        if (pi[z] !== "true") e += "<span>" + ti[z] + "</span>";
+        e += '</a><div class="clear"></div></li>';
+    }
+    e += "</ul>";
+    document.getElementById("rc-avatar-plus").innerHTML = e;
+
+    // Sau khi render xong, cập nhật câu hiển thị số bình luận
+    updateCommentSentence();
+}
+
+// Hàm hiển thị câu đúng ngữ pháp
+function updateCommentSentence() {
+  var el = document.getElementById("totalComments_bottom");
+  if (!el) return;
+  var count = parseInt(el.innerText, 10);
+  var sentence = (count === 1) 
+    ? "There is 1 comment" 
+    : "There are " + count + " comments";
+  var target = document.getElementById("commentSentence");
+  if (target) {
+    target.innerText = sentence;
+  }
+}
+
+// Nạp feed chính
+document.write('<script src="' + home_page + "/feeds/comments/default?alt=json-in-script&max-results=" + nc + '&callback=rc_avatar1"><\/script>');
