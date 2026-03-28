@@ -99,14 +99,14 @@ function rc_avatar() {
             r = (y !== -1 ? "&" + cp : "?" + cp);
         }
         e += '<li class="' + ((ur[z] == ura && im[z] == ima) || (ur[z] == admin_uri && im[z] == admin_avatar) ? "rc-admin" : "rc-author") + '">';
-        
-        // Tên tác giả hiển thị riêng một dòng
+
+        // Avatar + tên tác giả (một dòng riêng)
         e += '<div class="rc-info">';
         e += '<img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/>';
         e += '<h4>' + a[z] + '</h4>';   // tên tác giả
         e += '</div>';
-        
-        // Nội dung comment hiển thị riêng một dòng, in đậm màu đen
+
+        // Nội dung comment (một dòng riêng, in đậm màu đen)
         e += '<a href="' + d[z] + r + p[z] + '" rel="nofollow" title="' + a[z] + " on " + t[z] + '">';
         e += '<p class="rc-content">' + j2[z] + '</p>';   // nội dung comment
         if (pi[z] !== "true") e += "<span>" + ti[z] + "</span>";
