@@ -88,6 +88,7 @@ function rc_avatar1(tfeed) {
 }
 
 // Hàm render ra HTML
+// Hàm render ra HTML (đã chỉnh sửa)
 function rc_avatar() {
     var e = "<ul>";
     for (var z = 0; z < nc && z < tt; z++) {
@@ -100,7 +101,9 @@ function rc_avatar() {
         }
         e += '<li class="' + ((ur[z] == ura && im[z] == ima) || (ur[z] == admin_uri && im[z] == admin_avatar) ? "rc-admin" : "rc-author") + '">';
         e += '<div class="rc-info"><img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/><h4>' + a[z] + '</h4></div>';
-        e += '<a href="' + d[z] + r + p[z] + '" rel="nofollow" title="' + a[z] + " on " + t[z] + '"><p>' + j2[z] + "</p>";
+        e += '<a href="' + d[z] + r + p[z] + '" rel="nofollow" title="' + a[z] + " on " + t[z] + '">';
+        // Nội dung comment in đậm, màu đen
+        e += '<p class="rc-content">' + j2[z] + '</p>';
         if (pi[z] !== "true") e += "<span>" + ti[z] + "</span>";
         e += '</a><div class="clear"></div></li>';
     }
