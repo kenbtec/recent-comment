@@ -8,7 +8,9 @@ var length_content = 100;    // độ dài nội dung bình luận
 // Trang chủ và admin
 var home_page = window.location.origin; 
 var admin_uri = 'https://www.facebook.com/leanhduc.pro.vn/';
-var no_avatar = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgho8BlJ4qgBtNEvwN3bXOqi9KHgIEGcup6TS9_SoY1Fbr2P9G__gtDCXJMvV1vbpPBBYlK-mWAS5esD2tiFPLeunuJspwi8C9lT4Pd_lDrCS3VEmnxWDR0IYNTLai0nL_PDDIrRwO5Am90/s16000/favicon-1000x1000.png';
+
+// Ảnh mặc định khi không có avatar
+var no_avatar = 'https://img.icons8.com/ios-filled/100/000000/user.png';
 var admin_avatar = no_avatar;
 
 // Các biến toàn cục
@@ -37,7 +39,7 @@ function rc_avatar1(tfeed) {
     if ("uri" in tfeed.feed.author[0]) ura = tfeed.feed.author[0].uri.$t;
     ima = tfeed.feed.author[0].gd$image.src;
 
-    for (var g = 0; g < nc && g < tt && g++) {
+    for (var g = 0; g < nc && g < tt; g++) {
         var c = tfeed.feed.entry[g];
         var lkParts = c.link[0].href.split("/");
         var bid = lkParts[4], pid = lkParts[5], cid = lkParts[8];
@@ -71,7 +73,7 @@ function rc_avatar1(tfeed) {
         var avatarSrc = c.author[0].gd$image.src;
         if (avatarSrc.indexOf("blank.gif") !== -1) {
             im[g] = no_avatar;
-            alt[g] = "no avatar";
+            alt[g] = "Anonymous";
         } else {
             im[g] = avatarSrc;
             alt[g] = a[g];
@@ -95,34 +97,4 @@ function rc_avatar() {
         if (pn[z] === 1) r = "#c";
         else {
             var cp = "commentPage=" + pn[z] + "#c";
-            r = (y !== -1 ? "&" + cp : "?" + cp);
-        }
-        e += '<li class="' + ((ur[z] == ura && im[z] == ima) || (ur[z] == admin_uri && im[z] == admin_avatar) ? "rc-admin" : "rc-author") + '">';
-        e += '<div class="rc-info"><img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/><h4>' + a[z] + '</h4></div>';
-        e += '<a href="' + d[z] + r + p[z] + '" rel="nofollow" title="' + a[z] + " on " + t[z] + '"><p>' + j2[z] + "</p>";
-        if (pi[z] !== "true") e += "<span>" + ti[z] + "</span>";
-        e += '</a><div class="clear"></div></li>';
-    }
-    e += "</ul>";
-    document.getElementById("rc-avatar-plus").innerHTML = e;
-
-    // Sau khi render xong, cập nhật câu hiển thị số bình luận
-    updateCommentSentence();
-}
-
-// Hàm hiển thị câu đúng ngữ pháp
-function updateCommentSentence() {
-  var el = document.getElementById("totalComments_bottom");
-  if (!el) return;
-  var count = parseInt(el.innerText, 10);
-  var sentence = (count === 1) 
-    ? "There is 1 comment" 
-    : "There are " + count + " comments";
-  var target = document.getElementById("commentSentence");
-  if (target) {
-    target.innerText = sentence;
-  }
-}
-
-// Nạp feed chính
-document.write('<script src="' + home_page + "/feeds/comments/default?alt=json-in-script&max-results=" + nc + '&callback=rc_avatar1"><\/script>');
+            r = (y !== -1 ?
