@@ -108,3 +108,15 @@ function rc_avatar() {
 if (copyright_by_kenat === "Recent Comments free version 3.2 by " + ad) {
     document.write('<script src="' + home_page + "/feeds/comments/default?alt=json-in-script&max-results=" + nc + '&callback=rc_avatar1"><\/script>');
 }
+
+function updateCommentText() {
+  var el = document.getElementById("totalComments_bottom");
+  if (el) {
+    var count = parseInt(el.innerText, 10);
+    var text = (count === 1) ? "comment" : "comments";
+    document.getElementById("commentText").innerText = text;
+  }
+}
+
+// Gọi sau khi feed nạp xong
+setTimeout(updateCommentText, 1000);
