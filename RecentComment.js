@@ -1,6 +1,6 @@
 /* Recent Comment By Ngô Hoàng Anh Tuấn */
 
-// Cấu hình mặc định
+// Cấu hình
 var numComments = 5;                  // số bình luận hiển thị
 var showAvatar = true;                // có hiển thị avatar
 var avatarSize = 42;                  // kích thước avatar
@@ -11,7 +11,7 @@ var defaultAvatar = "https://blogblog.com/img/b16-rounded.gif"; // avatar mặc 
 var hideCredits = true;               // ẩn phần credit
 var moreLinktext = " More »";         // text cho link "More"
 
-// Hàm chính hiển thị bình luận
+// Hàm hiển thị bình luận
 function rc_avatar(json) {
   var html = "<ul class='idbcomments'>";
   var entries = json.feed.entry || [];
@@ -23,7 +23,6 @@ function rc_avatar(json) {
     var avatar = entry.author[0].gd$image ? entry.author[0].gd$image.src : defaultAvatar;
     var content = entry.content.$t.replace(/<.*?>/g, "");
 
-    // Rút gọn nội dung
     if (content.length > characters) {
       content = content.substring(0, characters) + "...";
       if (showMorelink) {
