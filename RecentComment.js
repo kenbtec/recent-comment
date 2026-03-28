@@ -3,7 +3,7 @@
 // Cấu hình
 var nc = 20;                 // số lượng bình luận
 var length_name = 20;        // độ dài tên
-var length_content = 54;    // độ dài nội dung bình luận
+var length_content = 100;    // độ dài nội dung bình luận
 
 // Trang chủ và admin
 var home_page = window.location.origin; 
@@ -48,27 +48,42 @@ function rc_avatar1(tfeed) {
         ti[g] = c.gd$extendedProperty[1].value;
         p[g] = cid;
 
-        // Nội dung
-        var e = c.content ? c.content.$t : (c.summary ? c.summary.$t : "&#8592;");
-        e = e.replace(/<br \/>/g, " ").replace(/@<a.*?a>/g, "").replace(/<[^>]*>/g, "");
-        if (e.length < length_content) j2[g] = e;
-        else {
-            e = e.substring(0, length_content);
-            var r = e.lastIndexOf(" ");
-            j2[g] = e.substring(0, r) + "&#133;";
+        // 👉 Nội dung comment (check kỹ để tránh lỗi undefined)
+        var e = "";
+        if (c.content && c.content.$t) {
+            e = c.content.$t;
+        } else if (c.summary && c.summary.$t) {
+            e = c.summary.$t;
+        } else {
+            e = "←";
         }
 
-        // Tác giả (fallback nếu không có tên)
-        var a2 = c.author[0].name ? c.author[0].name.$t : "Anonymous";
-        if (a2.length < length_name) a[g] = a2;
-        else {
-            a2 = a2.substring(0, length_name);
-            a[g] = a2 + "&#133;";
+        e = e.replace(/<br\s*\/?>/gi, " ")
+             .replace(/@<a.*?a>/gi, "")
+             .replace(/<[^>]*>/g, "")
+             .trim();
+
+        if (e.length <= length_content) {
+            j2[g] = e;
+        } else {
+            var truncated = e.substring(0, length_content);
+            var lastSpace = truncated.lastIndexOf(" ");
+            if (lastSpace > 0) truncated = truncated.substring(0, lastSpace);
+            j2[g] = truncated + "…";
+        }
+
+        // 👉 Tác giả (fallback nếu không có tên)
+        var a2 = (c.author[0].name && c.author[0].name.$t) ? c.author[0].name.$t : "Anonymous";
+        a2 = a2.trim();
+        if (a2.length <= length_name) {
+            a[g] = a2;
+        } else {
+            a[g] = a2.substring(0, length_name) + "…";
         }
 
         if ("uri" in c.author[0]) ur[g] = c.author[0].uri.$t;
 
-        // Avatar
+        // 👉 Avatar
         var avatarSrc = c.author[0].gd$image.src;
         if (avatarSrc.indexOf("blank.gif") !== -1) {
             im[g] = no_avatar;
@@ -78,7 +93,7 @@ function rc_avatar1(tfeed) {
             alt[g] = a[g];
         }
 
-        // Gọi tiếp feed để lấy tiêu đề bài
+        // 👉 Nạp feed để lấy tiêu đề bài viết
         if (d[g].indexOf("/p/") !== -1) {
             document.write('<script src="https://www.blogger.com/feeds/' + bid + "/pages/default/" + pid + '?alt=json-in-script&callback=rc_avatar2"><\/script>');
         } else {
@@ -110,31 +125,23 @@ function rc_avatar() {
     e += '<li class="' + liClass + '">';
     e += '<div class="rc-item">';
 
-    // Bọc avatar + text trong cùng một <a>
     e += '<a href="' + d[z] + r + p[z] + '" rel="nofollow" title="' + a[z] + " on " + t[z] + '" class="rc-link">';
-
-    // Avatar bên trái
     e += '<img alt="' + alt[z] + '" class="rc-avatar" src="' + im[z] + '"/>';
-
-    // Khối text bên phải (theo cột dọc)
     e += '<div class="rc-text">';
-    e += '<h4 class="rc-name">' + a[z] + '</h4>';        // tên tác giả
-    e += '<p class="rc-content">' + j2[z] + '</p>';      // nội dung comment
+    e += '<h4 class="rc-name">' + a[z] + '</h4>';
+    e += '<p class="rc-content">' + j2[z] + '</p>';
     if (pi[z] !== "true") {
-      e += "<span class='rc-date'>" + ti[z] + "</span>"; // ngày tháng
+      e += "<span class='rc-date'>" + ti[z] + "</span>";
     }
-    e += '</div>'; // đóng rc-text
-
-    e += '</a>'; // đóng link
-    e += '</div>'; // đóng rc-item
+    e += '</div>';
+    e += '</a>';
+    e += '</div>';
     e += '</li>';
   }
   e += "</ul>";
 
-  // Gắn vào DOM
   document.getElementById("rc-avatar-plus").innerHTML = e;
 }
-
 
 // Hàm hiển thị câu đúng ngữ pháp
 function updateCommentSentence() {
