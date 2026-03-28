@@ -32,7 +32,7 @@ function rc_avatar2(a) {
 }
 
 // Giới hạn ký tự nội dung bình luận
-var length_content = 60; 
+var length_content = 54; 
 var length_name = 20; 
 
 function rc_avatar1(tfeed) {
